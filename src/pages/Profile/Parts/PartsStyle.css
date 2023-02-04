@@ -1,0 +1,47 @@
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  font-size: large;
+  padding: 15px;
+  color: white;
+  height: 100rem;
+  position: sticky;
+}
+
+.card-style {
+  height: auto;
+  width: 100%;
+  padding: 15px;
+}
+
+.likes-btn {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 3px;
+}
+
+.mypost-style {
+  background-color: #212529d7;  
+}
+
+.profilepicture{
+  border-radius: 25px;
+  border: solid 5px #212529;
+}
+
+.picturebox {
+  display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+
+.usercard-style{      
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1.5rem;
+  padding: 15px;
+  color: white;
+}
