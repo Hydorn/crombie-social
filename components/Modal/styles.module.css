@@ -1,0 +1,32 @@
+.modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  cursor: pointer;
+  background-color: #00000099;
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal_window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.modal_container {
+  background-color: #fff;
+  width: 30rem;
+  border-radius: 5px;
+}
+
+@media (max-width: 500px) {
+  .modal_container {
+    width: 100vw;
+  }
+}

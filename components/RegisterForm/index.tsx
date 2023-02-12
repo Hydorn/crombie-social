@@ -1,12 +1,18 @@
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
   Container,
+  IconButton,
+  InputAdornment,
   Link,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import LoginForm from "../LoginForm";
+import Modal from "../Modal";
 
 type RegisterFormType = {
   email: string;
@@ -16,20 +22,46 @@ type RegisterFormType = {
 };
 
 const RegisterForm = () => {
+  // Password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // Modal state and handler
+  const [modal, setModal] = useState(false);
+  const handleModal = () => {
+    setModal(!modal);
+  };
+
+  // Register form functions
   const {
     register,
     formState: { errors },
+    setError,
     handleSubmit,
   } = useForm<RegisterFormType>();
+
   const onSubmit: SubmitHandler<RegisterFormType> = (data) => {
+    if (data.password !== data.repeatPassword) {
+      setError("repeatPassword", { message: "Passwords do not match" });
+      return;
+    }
     console.log(data);
   };
 
-  const handleModal = () => {
-    console.log("gola padre");
-  };
+  // Component Return
   return (
     <>
+      {/*Modal Start*/}
+      {modal && (
+        <Modal handleModal={handleModal}>
+          <LoginForm />
+        </Modal>
+      )}
+
+      {/*Component Start*/}
+
       <Stack>
         <Typography align="center" variant="h3" component="h2">
           Welcome to @Crombie-Social!
@@ -86,7 +118,7 @@ const RegisterForm = () => {
           />
           <TextField
             variant="outlined"
-            type="password"
+            type={showPassword ? "text" : "password"}
             label="Password"
             {...register("password", {
               required: {
@@ -104,10 +136,21 @@ const RegisterForm = () => {
             })}
             error={Boolean(errors.password?.message)}
             helperText={errors.password?.message}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleShowPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             variant="outlined"
-            type="password"
             label="Repeat Password"
             {...register("repeatPassword", {
               required: {
@@ -117,6 +160,7 @@ const RegisterForm = () => {
             })}
             error={Boolean(errors.repeatPassword?.message)}
             helperText={errors.repeatPassword?.message}
+            type={showPassword ? "text" : "password"}
           />
 
           <Link
