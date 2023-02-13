@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { url } from "@/utilities/endopoint";
 import toast, { Toaster } from "react-hot-toast";
+import { useFetchRegister } from "@/hooks/useFetchRegister";
 
 const RegisterForm = () => {
   // Password visibility
@@ -38,36 +39,12 @@ const RegisterForm = () => {
     handleSubmit,
   } = useForm<RegisterFormType>();
 
-  const onSubmit: SubmitHandler<RegisterFormType> = async (formData) => {
+  const onSubmit: SubmitHandler<RegisterFormType> = (formData) => {
     if (formData.password !== formData.repeatPassword) {
       setError("repeatPassword", { message: "Passwords do not match" });
       return;
     }
-
-    try {
-      const response = fetch(url + "user/register", {
-        body: JSON.stringify(formData),
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-      })
-        .then((res) => {
-          console.log(res);
-
-          if (!res.ok) throw new Error(res.statusText);
-          res.json();
-        })
-        .then((data) => console.log(data));
-
-      toast.promise(response, {
-        loading: "Registering User",
-        success: `${formData.username} user created`,
-        error: (error) => `${error.toString().slice(6)}`,
-      });
-    } catch (error: any) {
-      console.error(error);
-    }
+    useFetchRegister(formData);
   };
 
   // Component Return
