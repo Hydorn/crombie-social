@@ -1,9 +1,6 @@
+import { ModalProps } from "@/utilities/types";
 import styles from "./styles.module.css";
 
-type ModalProps = {
-  children: React.ReactNode;
-  handleModal: Function;
-};
 const Modal: React.FC<ModalProps> = ({ children, handleModal }) => {
   const onClose = () => {
     handleModal((prev: boolean) => !prev);

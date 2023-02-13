@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import LoginForm from "../LoginForm";
+import Modal from "../Modal";
+import { RegisterFormType } from "@/utilities/types";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
@@ -9,17 +14,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import LoginForm from "../LoginForm";
-import Modal from "../Modal";
-
-type RegisterFormType = {
-  email: string;
-  username: string;
-  password: string;
-  repeatPassword: string;
-};
+import { url } from "@/utilities/endopoint";
+import toast, { Toaster } from "react-hot-toast";
 
 const RegisterForm = () => {
   // Password visibility
@@ -42,17 +38,42 @@ const RegisterForm = () => {
     handleSubmit,
   } = useForm<RegisterFormType>();
 
-  const onSubmit: SubmitHandler<RegisterFormType> = (data) => {
-    if (data.password !== data.repeatPassword) {
+  const onSubmit: SubmitHandler<RegisterFormType> = async (formData) => {
+    if (formData.password !== formData.repeatPassword) {
       setError("repeatPassword", { message: "Passwords do not match" });
       return;
     }
-    console.log(data);
+
+    try {
+      const response = fetch(url + "user/register", {
+        body: JSON.stringify(formData),
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((res) => {
+          console.log(res);
+
+          if (!res.ok) throw new Error(res.statusText);
+          res.json();
+        })
+        .then((data) => console.log(data));
+
+      toast.promise(response, {
+        loading: "Registering User",
+        success: `${formData.username} user created`,
+        error: (error) => `${error.toString().slice(6)}`,
+      });
+    } catch (error: any) {
+      console.error(error);
+    }
   };
 
   // Component Return
   return (
     <>
+      <Toaster position="bottom-center" />
       {/*Modal Start*/}
       {modal && (
         <Modal handleModal={handleModal}>

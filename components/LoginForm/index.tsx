@@ -1,3 +1,4 @@
+import { LoginFormType } from "@/utilities/types";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
@@ -11,11 +12,6 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
-type LoginFormType = {
-  email: string;
-  password: string;
-};
 
 const LoginForm = () => {
   // Password visibility
