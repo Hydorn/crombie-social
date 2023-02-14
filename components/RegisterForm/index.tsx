@@ -37,6 +37,7 @@ const RegisterForm = () => {
     formState: { errors },
     setError,
     handleSubmit,
+    reset,
   } = useForm<RegisterFormType>();
 
   const onSubmit: SubmitHandler<RegisterFormType> = (formData) => {
@@ -44,7 +45,7 @@ const RegisterForm = () => {
       setError("repeatPassword", { message: "Passwords do not match" });
       return;
     }
-    useFetchRegister(formData);
+    useFetchRegister(formData, reset);
   };
 
   // Component Return

@@ -15,4 +15,7 @@ export type LoginFormType = {
   password: string;
 };
 
-export type FetchRegisterType = (param: RegisterFormType) => void;
+export type FetchRegisterType = (
+  formData: RegisterFormType,
+  resetForm: Function
+) => void;

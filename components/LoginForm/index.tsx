@@ -1,3 +1,5 @@
+import { useAuthContext } from "@/context/authContext";
+import { url } from "@/utilities/endopoint";
 import { LoginFormType } from "@/utilities/types";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
@@ -12,8 +14,11 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import toast from "react-hot-toast";
+import Router from "next/router";
 const LoginForm = () => {
+  const { handleSetAuth } = useAuthContext();
+
   // Password visibility
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => {
@@ -27,8 +32,33 @@ const LoginForm = () => {
     handleSubmit,
   } = useForm<LoginFormType>();
 
-  const onSubmit: SubmitHandler<LoginFormType> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginFormType> = (formData) => {
+    try {
+      const response = fetch(url + "user/login", {
+        body: JSON.stringify(formData),
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then((res) => {
+        if (res.ok) {
+          res
+            .json()
+            .then((data) => handleSetAuth(data?.payload))
+            .finally(() => {
+              Router.push("myprofile");
+            });
+        } else throw new Error(res.statusText);
+      });
+
+      toast.promise(response, {
+        loading: "Login In",
+        success: `Succesfully logged in`,
+        error: (error) => `${error.toString().slice(6)}`,
+      });
+    } catch (error: any) {
+      console.error(error);
+    }
   };
 
   return (

@@ -2,7 +2,7 @@ import { url } from "@/utilities/endopoint";
 import { FetchRegisterType } from "@/utilities/types";
 import toast from "react-hot-toast";
 
-export const useFetchRegister: FetchRegisterType = (formData) => {
+export const useFetchRegister: FetchRegisterType = (formData, reset) => {
   try {
     const response = fetch(url + "user/register", {
       body: JSON.stringify(formData),
@@ -14,7 +14,8 @@ export const useFetchRegister: FetchRegisterType = (formData) => {
       console.log(res);
 
       if (!res.ok) throw new Error(res.statusText);
-      res.json();
+      else reset();
+      return res.json();
     });
 
     toast.promise(response, {
