@@ -19,12 +19,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { useFetchRegister } from "@/hooks/useFetchRegister";
 
 const RegisterForm = () => {
-  // Password visibility
-  const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   // Modal state and handler
   const [modal, setModal] = useState(false);
   const handleModal = () => {
@@ -117,7 +111,7 @@ const RegisterForm = () => {
           />
           <TextField
             variant="outlined"
-            type={showPassword ? "text" : "password"}
+            type="password"
             label="Password"
             {...register("password", {
               required: {
@@ -135,18 +129,6 @@ const RegisterForm = () => {
             })}
             error={Boolean(errors.password?.message)}
             helperText={errors.password?.message}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleShowPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
           />
           <TextField
             variant="outlined"
@@ -159,7 +141,7 @@ const RegisterForm = () => {
             })}
             error={Boolean(errors.repeatPassword?.message)}
             helperText={errors.repeatPassword?.message}
-            type={showPassword ? "text" : "password"}
+            type="password"
           />
 
           <Link
